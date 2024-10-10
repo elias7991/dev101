@@ -9,11 +9,11 @@ class DioClient {
 
   final Dio dio;
 
-  //TODO: agregar los demas verbos segun necesidad
+  //TODO: agregar los demás verbos según necesidad
   Future<LR<T>> get<T>(
     String path, {
     T Function(Map<String, dynamic>)? fromJson,
-    T Function(String)? fromJsonList,
+    T Function(List<dynamic>)? fromList,
     Map<String, dynamic>? queryParams,
     Map<String, dynamic>? aditionalHeaders,
   }) async {
@@ -31,8 +31,8 @@ class DioClient {
       if (response.statusCode == 200) {
         if (fromJson != null) {
           return right(fromJson(response.data));
-        } else if (fromJsonList != null) {
-          return right(fromJsonList(response.data));
+        } else if (fromList != null) {
+          return right(fromList(response.data));
         } else {
           throw ArgumentError(
               'At least one of the parameters fromJson and fromJsonList must be sent');
