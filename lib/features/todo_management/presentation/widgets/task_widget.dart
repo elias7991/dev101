@@ -1,6 +1,8 @@
 import 'package:dev101/features/todo_management/domain/entities/entities.dart';
-import 'package:dev101/features/todo_management/presentation/helpers/enum_to_text.dart';
+import 'package:dev101/features/todo_management/presentation/bloc/bloc.dart';
+import 'package:dev101/features/todo_management/presentation/helpers/helpers.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TaskWidget extends StatelessWidget {
@@ -13,6 +15,8 @@ class TaskWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final todo = context.read<TodoBloc>().state.tasks;
+
     return ListView.builder(
       itemCount: tasks.length,
       itemBuilder: (context, index) {
@@ -37,7 +41,11 @@ class TaskWidget extends StatelessWidget {
                 if (value == 'edit') {
                   // Editar la tarea
                 } else if (value == 'delete') {
-                  // Eliminar la tarea
+                  if (todo != null) {
+                    context
+                        .read<TodoBloc>()
+                        .add(UpdateTodo(todo: todo.deleteTaskByID(task.id)));
+                  }
                 }
               },
               itemBuilder: (BuildContext context) {

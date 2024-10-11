@@ -15,11 +15,11 @@ String getPriorityInSpanish(TaskPriorityEnum priority) {
 
 TaskPriorityEnum getPriorityFromString(String priority) {
   switch (priority.toLowerCase()) {
-    case 'alta':
+    case 'alta' || 'high':
       return TaskPriorityEnum.high;
-    case 'media':
+    case 'media' || 'medium':
       return TaskPriorityEnum.medium;
-    case 'baja':
+    case 'baja' || 'low':
       return TaskPriorityEnum.low;
     default:
       return TaskPriorityEnum.empty;

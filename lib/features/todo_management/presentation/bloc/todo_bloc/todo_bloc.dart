@@ -18,7 +18,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
           ),
         ) {
     on<GetTodo>(_onGetTodo);
-    // on<UpdateTodo>(_onUpdateTodo);
+    on<UpdateTodo>(_onUpdateTodo);
   }
 
   final TodoUseCases _todoUseCases;
@@ -42,5 +42,16 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
         },
       );
     }
+  }
+
+  Future<void> _onUpdateTodo(UpdateTodo event, Emitter<TodoState> emit) async {
+    emit(state.copyWith(todoState: BlocStateEnum.loading));
+
+    await _todoUseCases
+      .saveTodoUseCase(event.todo)
+      .whenComplete(() => emit(
+        state.copyWith(todoState: BlocStateEnum.loaded, tasks: event.todo)
+      ));
+
   }
 }

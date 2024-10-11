@@ -1,9 +1,12 @@
 import 'package:dev101/features/todo_management/presentation/bloc/bloc.dart';
 import 'package:dev101/features/todo_management/presentation/enums/enums.dart';
+import 'package:dev101/features/todo_management/presentation/screens/screens.dart';
 import 'package:dev101/features/todo_management/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
+import 'package:loader_overlay/loader_overlay.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -29,17 +32,20 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         title: const Text('Todo List'),
       ),
-      body: BlocBuilder<TodoBloc, TodoState>(
-        builder: (context, state) {
+      body: BlocConsumer<TodoBloc, TodoState>(
+        listener: (context, state) {
           if (state.todoState == BlocStateEnum.loading) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
+            context.loaderOverlay.show();
           } else if (state.todoState == BlocStateEnum.error) {
-            return const Center(
-              child: Text('Error al cargar.'),
-            );
+            context.loaderOverlay.hide();
           } else if (state.todoState == BlocStateEnum.loaded) {
+            context.loaderOverlay.hide();
+          } else {
+            context.loaderOverlay.hide();
+          }
+        },
+        builder: (context, state) {
+          if (state.todoState == BlocStateEnum.loaded) {
             return Padding(
               padding: EdgeInsets.symmetric(
                 horizontal: 16.w,
@@ -49,6 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 tasks: state.tasks?.todo ?? [],
               ),
             );
+          } else if (state.todoState == BlocStateEnum.error) {
+            return const Center(
+              child: Text('Error al cargar'),
+            );
           } else {
             return Container();
           }
@@ -56,7 +66,7 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Add your onPressed action here
+          context.pushNamed(TaskScreen.routeName);
         },
         mini: true,
         backgroundColor: Colors.blue,

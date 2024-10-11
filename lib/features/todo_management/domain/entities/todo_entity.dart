@@ -26,6 +26,16 @@ class TodoEntity extends Equatable {
     };
   }
 
+  TodoEntity addTask(TaskEntity newTask) {
+    return TodoEntity(todo: [...todo, newTask]);
+  }
+
+  TodoEntity deleteTaskByID(String id) {
+    return TodoEntity(
+      todo: todo.where((task) => task.id != id).toList(),
+    );
+  }
+
   @override
   List<Object?> get props => [todo];
 }

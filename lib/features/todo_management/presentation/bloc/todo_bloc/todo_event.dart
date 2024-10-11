@@ -10,7 +10,7 @@ abstract class TodoEvent extends Equatable {
 class GetTodo extends TodoEvent {}
 
 class UpdateTodo extends TodoEvent {
-  const UpdateTodo({ required this.tasks });
+  const UpdateTodo({ required this.todo });
 
-  final List<TaskEntity> tasks;
+  final TodoEntity todo;
 }
