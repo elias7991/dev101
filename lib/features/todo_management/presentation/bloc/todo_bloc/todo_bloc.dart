@@ -35,7 +35,7 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
       final todoResponse = await _todoUseCases.todoUseCase();
 
       todoResponse.fold(
-        (l) => emit(state.copyWith(todoState: BlocStateEnum.error)),
+        (l) async => emit(state.copyWith(todoState: BlocStateEnum.error)),
         (r) async {
           await _todoUseCases.saveTodoUseCase(r).whenComplete(() =>
               emit(state.copyWith(todoState: BlocStateEnum.loaded, tasks: r)));
