@@ -41,15 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: const Text('Todo List'),
+          elevation: 0,
+          backgroundColor: Colors.deepPurpleAccent,
+          centerTitle: true,
         ),
         body: BlocConsumer<TodoBloc, TodoState>(
           listener: (context, state) {
             if (state.todoState == BlocStateEnum.loading) {
               context.loaderOverlay.show();
-            } else if (state.todoState == BlocStateEnum.error) {
-              context.loaderOverlay.hide();
-            } else if (state.todoState == BlocStateEnum.loaded) {
-              context.loaderOverlay.hide();
             } else {
               context.loaderOverlay.hide();
             }
@@ -70,26 +69,73 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 child: Column(
                   children: [
-                    Row(
-                      children: [
-                        const Text('Prioridad'),
-                        SizedBox(width: 25.w),
-                        DropdownButton<TaskPriorityEnum>(
-                          value: _selectedPriority,
-                          items: TaskPriorityEnum.values.map((priority) {
-                            return DropdownMenuItem<TaskPriorityEnum>(
-                              value: priority,
-                              child: Text(getPriorityInSpanish(priority)),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              _selectedPriority = value!;
-                            });
-                          },
-                        ),
-                      ],
+                    // filter
+                    Container(
+                      margin: EdgeInsets.only(bottom: 16.h),
+                      padding: EdgeInsets.symmetric(
+                        horizontal: 12.w,
+                        vertical: 8.h,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.grey.withOpacity(0.1),
+                            spreadRadius: 5,
+                            blurRadius: 7,
+                            offset: const Offset(0, 3),
+                          ),
+                        ],
+                      ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            'Filtrar por prioridad',
+                            style: TextStyle(
+                              fontSize: 16.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.grey[700],
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.symmetric(horizontal: 12.w),
+                            decoration: BoxDecoration(
+                              color: Colors.deepPurple[50],
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: DropdownButton<TaskPriorityEnum>(
+                              value: _selectedPriority,
+                              underline: Container(),
+                              icon: const Icon(
+                                Icons.keyboard_arrow_down,
+                                color: Colors.deepPurpleAccent,
+                              ),
+                              style: TextStyle(
+                                fontSize: 14.sp,
+                                color: Colors.deepPurpleAccent,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              items: TaskPriorityEnum.values.map((priority) {
+                                return DropdownMenuItem<TaskPriorityEnum>(
+                                  value: priority,
+                                  child: Text(
+                                    getPriorityInSpanish(priority),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  _selectedPriority = value!;
+                                });
+                              },
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
+                    // Todo List
                     Expanded(
                       child: TaskWidget(
                         tasks: filteredTasks,
@@ -100,20 +146,27 @@ class _HomeScreenState extends State<HomeScreen> {
               );
             } else if (state.todoState == BlocStateEnum.error) {
               return const Center(
-                child: Text('Error al cargar'),
+                child: Text(
+                  'Error al cargar',
+                  style: TextStyle(color: Colors.redAccent),
+                ),
               );
             } else {
-              return Container();
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
             }
           },
         ),
-        floatingActionButton: FloatingActionButton(
+        floatingActionButton: FloatingActionButton.small(
           onPressed: () {
             context.pushNamed(TaskScreen.routeName);
           },
-          mini: true,
-          backgroundColor: Colors.blue,
-          child: const Icon(Icons.add),
+          backgroundColor: Colors.deepPurpleAccent,
+          child: const Icon(
+            Icons.add,
+            color: Colors.white,
+          ),
         ),
       ),
     );
