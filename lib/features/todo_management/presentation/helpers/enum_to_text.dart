@@ -3,7 +3,7 @@ import 'package:dev101/features/todo_management/data/enums/enums.dart';
 String getPriorityInSpanish(TaskPriorityEnum priority) {
   switch (priority) {
     case TaskPriorityEnum.empty:
-      return '';
+      return 'Ninguno';
     case TaskPriorityEnum.low:
       return 'Baja';
     case TaskPriorityEnum.medium:
