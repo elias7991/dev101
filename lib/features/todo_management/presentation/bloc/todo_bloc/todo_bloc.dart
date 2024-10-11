@@ -24,15 +24,23 @@ class TodoBloc extends Bloc<TodoEvent, TodoState> {
   final TodoUseCases _todoUseCases;
 
   Future<void> _onGetTodo(GetTodo event, Emitter<TodoState> emit) async {
-    state.copyWith(
+    emit(state.copyWith(
       todoState: BlocStateEnum.loading,
-    );
+    ));
 
-    final todoResponse = await _todoUseCases.todoUseCase();
+    final tryTodo = await _todoUseCases.todoFromPrefsUseCase();
+    if (tryTodo != null) {
+      emit(state.copyWith(todoState: BlocStateEnum.loaded, tasks: tryTodo));
+    } else {
+      final todoResponse = await _todoUseCases.todoUseCase();
 
-    todoResponse.fold(
-      (l) => emit(state.copyWith(todoState: BlocStateEnum.error)),
-      (r) => emit(state.copyWith(todoState: BlocStateEnum.loaded, tasks: r)),
-    );
+      todoResponse.fold(
+        (l) => emit(state.copyWith(todoState: BlocStateEnum.error)),
+        (r) async {
+          await _todoUseCases.saveTodoUseCase(r).whenComplete(() =>
+              emit(state.copyWith(todoState: BlocStateEnum.loaded, tasks: r)));
+        },
+      );
+    }
   }
 }

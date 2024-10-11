@@ -10,6 +10,22 @@ class TodoEntity extends Equatable {
     return const TodoEntity(todo: []);
   }
 
+  factory TodoEntity.fromJson(Map<String, dynamic> json) {
+    List<dynamic> taskJsonList = json['todo'] as List<dynamic>;
+    List<TaskEntity> tasks = taskJsonList
+        .map(
+            (taskJson) => TaskEntity.fromJson(taskJson as Map<String, dynamic>))
+        .toList();
+
+    return TodoEntity(todo: tasks);
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'todo': todo.map((task) => task.toJson()).toList(),
+    };
+  }
+
   @override
   List<Object?> get props => [todo];
 }

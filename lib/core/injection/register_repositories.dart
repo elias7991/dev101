@@ -5,6 +5,9 @@ import 'package:get_it/get_it.dart';
 
 Future<void> registerRepositories() async {
   GetIt.I.registerSingleton<TodoRepository>(
-    TodoRepositoryImpl(todoDataSource: GetIt.I.get<TodoDataSource>()),
+    TodoRepositoryImpl(
+      todoDataSource: GetIt.I.get<TodoDataSource>(),
+      prefsDataSource: GetIt.I.get<SharedPreferencesDataSource>(),  
+    ),
   );
 }

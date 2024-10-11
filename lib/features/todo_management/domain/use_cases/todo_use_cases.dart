@@ -13,4 +13,12 @@ class TodoUseCases {
   Future<LR<TodoEntity>> todoUseCase() async {
     return repository.fetchTodo();
   }
+
+  Future<TodoEntity?> todoFromPrefsUseCase() async {
+    return repository.fetchTodoFromPreferences();
+  }
+
+  Future<void> saveTodoUseCase(TodoEntity todo) async {
+    return repository.saveTodos(todo);
+  }
 }

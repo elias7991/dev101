@@ -26,6 +26,32 @@ class TaskEntity extends Equatable {
     );
   }
 
+  factory TaskEntity.fromJson(Map<String, dynamic> json) {
+    return TaskEntity(
+      id: json['id'] as String,
+      title: json['title'] as String,
+      description: json['description'] as String,
+      priority: TaskPriorityEnum.values.firstWhere(
+        (e) => e.toString() == json['priority'],
+        orElse: () => TaskPriorityEnum.low,
+      ),
+      state: TaskStateEnum.values.firstWhere(
+        (e) => e.toString() == json['state'],
+        orElse: () => TaskStateEnum.todo,
+      ),
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'title': title,
+      'description': description,
+      'priority': priority.toString(),
+      'state': state.toString(),
+    };
+  }
+
   @override
   List<Object?> get props => [id, title, description, priority, state];
 }
