@@ -36,6 +36,17 @@ class TodoEntity extends Equatable {
     );
   }
 
+  TodoEntity updateTaskByID(TaskEntity updatedTask) {
+    List<TaskEntity> updatedTodo = todo.map((task) {
+      if (task.id == updatedTask.id) {
+        return updatedTask;
+      }
+      return task;
+    }).toList();
+
+    return TodoEntity(todo: updatedTodo);
+  }
+
   @override
   List<Object?> get props => [todo];
 }

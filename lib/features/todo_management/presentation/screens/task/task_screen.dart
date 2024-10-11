@@ -61,6 +61,8 @@ class _TaskScreenState extends State<TaskScreen> {
           child: TaskScreenBody(
             titleController: _titleEditingController,
             descriptionController: _descriptionEditingController,
+            priority: widget.task?.priority,
+            idToUpdate: widget.task?.id,
           ),
         ),
       ),

@@ -1,9 +1,11 @@
 import 'package:dev101/features/todo_management/domain/entities/entities.dart';
 import 'package:dev101/features/todo_management/presentation/bloc/bloc.dart';
 import 'package:dev101/features/todo_management/presentation/helpers/helpers.dart';
+import 'package:dev101/features/todo_management/presentation/screens/screens.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:go_router/go_router.dart';
 
 class TaskWidget extends StatelessWidget {
   const TaskWidget({
@@ -39,7 +41,12 @@ class TaskWidget extends StatelessWidget {
             trailing: PopupMenuButton<String>(
               onSelected: (String value) {
                 if (value == 'edit') {
-                  // Editar la tarea
+                  context.pushNamed(
+                    TaskScreen.routeName,
+                    extra: {
+                      'task': task,
+                    },
+                  );
                 } else if (value == 'delete') {
                   if (todo != null) {
                     context

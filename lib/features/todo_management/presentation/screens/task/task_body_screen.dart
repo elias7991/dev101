@@ -11,13 +11,17 @@ import 'package:loader_overlay/loader_overlay.dart';
 
 class TaskScreenBody extends StatefulWidget {
   const TaskScreenBody({
-    super.key,
     required this.titleController,
     required this.descriptionController,
+    this.priority,
+    this.idToUpdate,
+    super.key,
   });
 
   final TextEditingController titleController;
   final TextEditingController descriptionController;
+  final TaskPriorityEnum? priority;
+  final String? idToUpdate;
 
   @override
   State<TaskScreenBody> createState() => _TaskScreenBodyState();
@@ -31,6 +35,9 @@ class _TaskScreenBodyState extends State<TaskScreenBody> {
   void initState() {
     super.initState();
     todo = context.read<TodoBloc>().state.tasks ?? TodoEntity.empty();
+    if (widget.priority != null) {
+      _selectedPriority = widget.priority.toString().split('.').last;
+    }
   }
 
   @override
@@ -100,18 +107,32 @@ class _TaskScreenBodyState extends State<TaskScreenBody> {
             alignment: Alignment.centerRight,
             child: TextButton(
               onPressed: () {
-                final newID = generateTaskID(todo.todo);
-                final newTask = TaskEntity(
-                  id: newID,
-                  title: widget.titleController.text,
-                  description: widget.descriptionController.text,
-                  priority: getPriorityFromString(_selectedPriority ?? 'low'),
-                  state: TaskStateEnum.todo,
-                );
+                if (widget.idToUpdate != null) {
+                  final updatedTask = TaskEntity(
+                    id: widget.idToUpdate!,
+                    title: widget.titleController.text,
+                    description: widget.descriptionController.text,
+                    priority: getPriorityFromString(_selectedPriority ?? 'low'),
+                    state: TaskStateEnum.todo,
+                  );
 
-                context
-                    .read<TodoBloc>()
-                    .add(UpdateTodo(todo: todo.addTask(newTask)));
+                  context
+                      .read<TodoBloc>()
+                      .add(UpdateTodo(todo: todo.updateTaskByID(updatedTask)));
+                } else {
+                  final newID = generateTaskID(todo.todo);
+                  final newTask = TaskEntity(
+                    id: newID,
+                    title: widget.titleController.text,
+                    description: widget.descriptionController.text,
+                    priority: getPriorityFromString(_selectedPriority ?? 'low'),
+                    state: TaskStateEnum.todo,
+                  );
+
+                  context
+                      .read<TodoBloc>()
+                      .add(UpdateTodo(todo: todo.addTask(newTask)));
+                }
               },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.all(8.0),
@@ -122,9 +143,9 @@ class _TaskScreenBodyState extends State<TaskScreenBody> {
                   vertical: 4.h,
                   horizontal: 8.w,
                 ),
-                child: const Text(
-                  'Agregar',
-                  style: TextStyle(color: Colors.white),
+                child: Text(
+                  widget.idToUpdate == null ? 'Agregar' : 'Modificar',
+                  style: const TextStyle(color: Colors.white),
                 ),
               ),
             ),
