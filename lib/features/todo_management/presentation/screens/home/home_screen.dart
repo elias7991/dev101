@@ -1,7 +1,9 @@
 import 'package:dev101/features/todo_management/presentation/bloc/bloc.dart';
 import 'package:dev101/features/todo_management/presentation/enums/enums.dart';
+import 'package:dev101/features/todo_management/presentation/widgets/widgets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -25,7 +27,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
-        title: const Text('Header Screen'),
+        title: const Text('Todo List'),
       ),
       body: BlocBuilder<TodoBloc, TodoState>(
         builder: (context, state) {
@@ -38,8 +40,14 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('Error al cargar.'),
             );
           } else if (state.todoState == BlocStateEnum.loaded) {
-            return Center(
-              child: Text('se encontraron ${state.tasks?.todo.length} datos'),
+            return Padding(
+              padding: EdgeInsets.symmetric(
+                horizontal: 16.w,
+                vertical: 8.h,
+              ),
+              child: TaskWidget(
+                tasks: state.tasks?.todo ?? [],
+              ),
             );
           } else {
             return Container();
