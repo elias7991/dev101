@@ -29,9 +29,14 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |-- 📁 features/
 |   |-- 📁 example_feature/
 |   |   |-- 📁 data/
-|   |   |   |-- 📁 datasources/
-|   |   |   |   |-- 📄 example_remote_datasource.dart
-|   |   |   |   |-- 📄 datasources.dart //export file
+|   |   |   |-- 📁 data_sources/
+|   |   |   |   |-- 📁 local/
+|   |   |   |   |    |-- 📄 example_local_data_source.dart
+|   |   |   |   |    |-- 📄 local.dart //export file
+|   |   |   |   |-- 📁 remote/
+|   |   |   |   |    |-- 📄 example_remote_data_source.dart
+|   |   |   |   |    |-- 📄 remote.dart //export file
+|   |   |   |   |-- 📄 data_sources.dart //export file
 |   |   |   |-- 📁 enums/
 |   |   |   |   |-- 📄 example_enum.dart
 |   |   |   |   |-- 📄 enums.dart //export file
@@ -41,7 +46,7 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |   |   |   |-- 📁 repositories/
 |   |   |   |   |-- 📄 example_repository.dart
 |   |   |   |   |-- 📄 repositories.dart //export file
-|   |   |   |-- 📁 utils/
+|   |   |   |-- 📁 utils/ (not use in this case)
 |   |   |   |   |-- 📄 example_utils.dart
 |   |   |   |   |-- 📄 utils.dart //export file
 |   |   |   |-- 📄 data.dart //export file
@@ -52,9 +57,9 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |   |   |   |-- 📁 repositories/
 |   |   |   |   |-- 📄 example_repository.dart
 |   |   |   |   |-- 📄 repositories.dart //export file
-|   |   |   |-- 📁 usecases/
-|   |   |   |   |-- 📄 example_usecase.dart
-|   |   |   |   |-- 📄 usecases.dart //export file
+|   |   |   |-- 📁 use_cases/
+|   |   |   |   |-- 📄 example_use_case.dart
+|   |   |   |   |-- 📄 use_cases.dart //export file
 |   |   |   |-- 📄 domain.dart //export file
 |   |   |-- 📁 presentation/
 |   |   |   |-- 📁 bloc
@@ -65,8 +70,14 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |   |   |   |   |-- 📁 other_bloc_folder
 |   |   |   |-- 📄 bloc.dart //export file
 |   |   |   |-- 📁 enums
+|   |   |   |   |-- 📄 example_enum.dart
+|   |   |   |   |-- 📄 enums.dart //export file
+|   |   |   |-- 📁 helpers
+|   |   |   |   |-- 📄 example_helper.dart
+|   |   |   |   |-- 📄 helpers.dart //export file
 |   |   |   |-- 📁 screens/
-|   |   |   |   |-- 📄 example_screen.dart
+|   |   |   |   |-- 📁 example_screen/
+|   |   |   |   |   |-- 📄 example_screen.dart
 |   |   |   |   |-- 📄 screens.dart //export file
 |   |   |   |-- 📁 widgets/
 |   |   |   |   |-- 📄 example_widget.dart
@@ -78,31 +89,35 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |   |   |-- 📄 other_example_feature.dart
 |-- 📁 core/
 |   |-- 📁 widgets/
+|   |-- |-- 📁 atomic_design/ //this is a comp pattern
+|   |-- 📁 injection/
+|   |   |-- 📄 register_clients.dart
+|   |   |-- 📄 register_data_sources.dart
+|   |   |-- 📄 register_repositories.dart
+|   |   |-- 📄 register_services.dart
+|   |   |-- 📄 register_use_cases.dart
+|   |   |-- 📄 service_locator.dart //init all registers
 |   |-- 📁 network/
 |   |   |-- 📁 clients/
 |   |   |   |-- 📁 dio
-|   |   |   |   |-- 📄 country_client.dart
+|   |   |   |   |-- 📄 dio_client.dart
 |   |   |   |   |-- 📄 dio.dart //export file 
 |   |   |   |-- 📄 clients.dart //export file
-|   |   |-- 📁 errors/ //manejadores de errores comunes
-|   |   |-- 📁 exceptions/ //relacionados a la conectividad
-|   |   |-- 📁 interceptors/ //relacionados a la conectividad
+|   |   |-- 📁 exceptions/ //to have more control over error handling
+|   |   |-- 📁 interceptors/ //connectivity or others
 |   |-- 📁 observers/
 |   |   |-- 📄 custom_bloc_observer.dart
 |   |   |-- 📄 custom_navigator_observer.dart
 |   |   |-- 📄 observers.dart
-|   |-- 📁 injection/ //con riverpod no es necesario
-|   |   |-- 📄 register_clients.dart //inject de clientes HTTP
-|   |   |-- 📄 register_datasources.dart //inject de datasources
-|   |   |-- 📄 register_repositories.dart //inject de repositorios
-|   |   |-- 📄 register_usecases.dart //inject de usecases
-|   |   |-- 📄 service_locator.dart //inicialización de injects
 |   |   |-- 📄 injection.dart
+|   |-- 📁 providers/
+|   |   |-- 📄 bloc_provider.dart
+|   |   |-- 📄 providers.dart //export file
 |   |-- 📁 errors/
 |   |   |-- 📄 failure.dart
 |   |   |-- 📄 errors.dart //export file
 |   |-- 📁 utils/
-|   |   |-- 📄 constants.dart
+|   |   |-- 📄 constants.dart // or any other for core section
 |   |   |-- 📄 utils.dart //export file
 |   |-- 📁 config/
 |   |   |-- 📁 config1/
@@ -111,13 +126,17 @@ Esta es la capa más externa de la arquitectura limpia y es la encargada de **de
 |   |-- 📁 routers/
 |   |   |-- 📄 feature1_router.dart
 |   |   |-- 📄 feature2_router.dart
+|   |   |-- 📄 compose_router.dart //put the routers together
 |   |   |-- 📄 routers.dart //export file
-|   |-- 📁 extensions/
+|   |-- 📁 extensions/ //any extension we need
 |   |   |-- 📄 string_extensions.dart
 |   |   |-- 📄 datetime_extensions.dart
 |   |   |-- 📄 extensions.dart //export file
 |   |-- 📁 themes/
 |   |   |-- 📄 themes.dart //export file
+|   |-- 📁 services/
+|   |   |-- 📄 shared_preferences_service.dart
+|   |   |-- 📄 services.dart //export file
 |   |-- 📄 core.dart //export file
 |-- 📄 app.dart
 |-- 📄 bootstrap.dart
