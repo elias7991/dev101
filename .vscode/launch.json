@@ -1,0 +1,32 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "toolArgs": [
+        "run",
+        "--debug"
+      ],
+      "args": [],
+    },
+    {
+      "name": "Debug with FVM",
+      "program": "lib/main.dart",
+      "request": "launch",
+      "type": "dart",
+      "flutterMode": "debug",
+      "toolArgs": [
+        "run",
+        "--debug"
+      ],
+      "args": [],
+      "env": {
+        "PATH": "${workspaceFolder}/.fvm/flutter_sdk/bin:${env:PATH}"
+      }
+    }
+  ]
+}
